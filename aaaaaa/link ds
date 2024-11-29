@@ -1,0 +1,217 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+
+//node structure
+
+struct Node
+{
+	int data;
+	struct Node *Llink;
+	struct Node *Rlink;
+};
+
+struct Node *header=NULL;
+
+//create node (new node)
+
+struct Node *CreateNode(int data)
+{
+	struct Node *newnode;
+	newnode=(struct Node*)malloc(sizeof(struct Node));
+	newnode->data=data;
+	newnode->Llink=NULL;
+	newnode->Rlink=NULL;
+	return(newnode);
+}
+
+// INSERT AT FRONT
+
+void insertatfront(int data)
+{
+	struct Node *newnode;
+	newnode=CreateNode(data);
+
+	if(header==NULL)
+	{
+		header=newnode;
+	}
+	else
+	{	
+		newnode->Rlink=header;
+		header->Llink=newnode;
+		header=newnode;
+	}
+}
+
+// INSERT AT LAST
+
+
+
+void insertatend(int data)
+{
+	struct Node *ptr;
+	struct Node *newnode;
+	ptr=header->Rlink;
+	newnode=CreateNode(data);
+	while(ptr->Rlink!=NULL)
+	{
+		ptr=ptr->Rlink;
+
+	}
+		ptr->Rlink=newnode;
+		header->Llink=ptr;
+}
+
+// INSERT AT ANY
+
+void insertatany(int key, int data)
+{
+	struct Node *ptr = header;
+	struct Node *newnode;
+	ptr=header;
+	while (ptr != NULL && ptr->data != key)
+	{
+		ptr=ptr->Rlink;
+	}
+
+	if (ptr == NULL)
+	{
+		printf("Key not found, insertion not possible\n");
+		return;
+	}
+
+	newnode=CreateNode(data);
+	newnode->Rlink=ptr->Llink;
+	newnode->Llink=ptr->Rlink;
+	ptr->Rlink=newnode;
+	ptr->Llink=newnode;
+	newnode->data=data;
+}
+
+
+// DELETE AT FRONT
+
+void deleteatfront()
+{
+	struct Node *ptr;
+	if(header==NULL)
+	{
+		printf("list is empty");
+	}
+	else{
+		ptr=header;
+		header=header->Rlink;
+		free(ptr);
+	}
+
+}
+
+// DELETE AT LAST
+
+void deleteatend()
+{
+	if(header==NULL)
+	{
+		printf("list is empty");
+	}
+	else
+	{
+		struct Node *ptr;
+		struct Node *ptr1;
+		ptr=header;
+		while(ptr->Rlink!=NULL)
+		{
+			ptr1=ptr;
+			ptr=ptr->Rlink;
+		}
+		ptr1->Rlink=NULL;
+		free(ptr);
+	}
+}
+
+//DELETE AT ANY
+
+void deleteAtAny(int key)
+{
+if (header == NULL)
+{
+				printf("List is empty\n");
+				return;
+		    	}
+
+		    	struct Node *ptr = header;
+		    	struct Node *prev = NULL;
+
+		        // Search for the node with the given key
+
+		    	while (ptr != NULL && ptr->data != key)
+		    	{
+				prev = ptr;
+				ptr = ptr->link;
+		    	}
+
+		        // Key not found
+
+		    	if (ptr == NULL)
+		    	{
+				printf("Key not found, deletion not possible\n");
+				return;
+		    	}
+
+		    	// Key found
+		    	if (prev == NULL)  // If the node to delete is the first node
+		    	{
+				header = ptr->link;
+		    	}
+		    	else
+		    	{
+				prev->link = ptr->link;
+		    	}
+
+		    	free(ptr);
+		    	printf("Node with key %d deleted\n", key);
+		}
+
+
+
+// TRAVERSAL
+
+void traversal()
+{
+	struct Node *ptr;
+	ptr=header;
+	while(ptr!=NULL)
+	{
+		printf("%d ",ptr->data);
+		ptr=ptr->Rlink;
+	}
+	printf("\n");
+ }
+
+
+
+
+int main()
+{
+	
+	//struct Node *node;
+
+	insertatfront(20);
+	insertatfront(10);
+	
+	insertatend(30);
+	traversal();
+
+	insertatany(30,90);
+	traversal();
+
+	deleteatfront();
+	traversal();
+
+	deleteatend();
+	traversal();
+
+	return(0);
+
+}
