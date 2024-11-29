@@ -215,3 +215,72 @@ int main()
 	return(0);
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+void deleteAtAny(int key)
+{
+	if (header == NULL)
+	{
+		printf("List is empty\n");
+		return;
+	}
+	struct Node *ptr = header;
+	struct Node *Llink = NULL;
+
+	// Search for the node with the given key
+
+	while (ptr != NULL && ptr->data != key)
+	{
+		Llink = ptr;
+		ptr = ptr->Rlink;
+	}
+
+	// Key not found
+	if (ptr == NULL)
+	{
+		printf("Key not found, deletion not possible\n");
+	return;
+	}
+
+	// Key found
+	if (Llink == NULL)  // If the node to delete is the first node
+	{
+		header = ptr->Rlink;
+	}
+	else
+	{
+		Llink->Rlink = ptr->Rlink;
+	}
+
+	free(ptr);
+	printf("Node with key %d deleted\n", key);
+}
+
+//SEARCHING
+
+void searchNode(int key)
+{
+	struct Node *ptr=header;
+	while(ptr!=NULL)
+	{
+		if(ptr->data==key)
+		{	
+			printf("key %d found in the list\n",key);
+			return;
+		}
+		ptr=ptr->Rlink;
+	}
+	printf("key %d not found in the list\n",key);
+
+}	
+
